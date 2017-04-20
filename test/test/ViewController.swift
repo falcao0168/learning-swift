@@ -1,61 +1,73 @@
 //
 //  ViewController.swift
-//  uikit001
+//  UIKit004
 //
 //  Copyright © 2016年 FaBo, Inc. All rights reserved.
 //
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITextFieldDelegate {
+    
+    private var myTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // ボタンのサイズを定義.
-        let bWidth: CGFloat = 200
-        let bHeight: CGFloat = 50
+        // UITextFieldの配置するx,yと幅と高さを設定.
+        let tWidth: CGFloat = 200
+        let tHeight: CGFloat = 30
+        let posX: CGFloat = (self.view.bounds.width - tWidth)/2
+        let posY: CGFloat = (self.view.bounds.height - tHeight)/2
         
-        // 配置する座標を定義(画面の中心).
-        let posX: CGFloat = self.view.bounds.width/2 - bWidth/2
-        let posY: CGFloat = self.view.bounds.height/2 - bHeight/2
+        // UITextFieldを作成する.
+        myTextField = UITextField(frame: CGRect(x: posX, y: posY, width: tWidth, height: tHeight))
         
-        // Labelを作成.
-        let label: UILabel = UILabel(frame: CGRect(x: posX, y: posY, width: bWidth, height: bHeight))
+        // 表示する文字を代入する.
+        myTextField.text = "Hello TextField"
         
-        // UILabelの背景をオレンジ色に.
-        label.backgroundColor = UIColor.orange
+        // Delegateを自身に設定する
+        myTextField.delegate = self
         
-        // UILabelの枠を丸くする.
-        label.layer.masksToBounds = true
+        // 枠を表示する.
+        myTextField.borderStyle = .roundedRect
         
-        // 丸くするコーナーの半径.
-        label.layer.cornerRadius = 20.0
+        // クリアボタンを追加.
+        myTextField.clearButtonMode = .whileEditing
         
-        // 文字の色を白に定義.
-        label.textColor = UIColor.white
-        
-        // UILabelに文字を代入.
-        label.text = "Hello Swift!!"
-        
-        // 文字の影をグレーに定義.
-        label.shadowColor = UIColor.gray
-        
-        // Textを中央寄せにする.
-        label.textAlignment = NSTextAlignment.center
-        
-        // Viewの背景を青にする.
-        self.view.backgroundColor = UIColor.cyan
-        
-        // ViewにLabelを追加.
-        self.view.addSubview(label)
+        // Viewに追加する
+        self.view.addSubview(myTextField)
         
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
+    /*
+     UITextFieldが編集された直前に呼ばれる
+     */
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("textFieldDidBeginEditing: \(textField.text!)")
+    }
+    
+    /*
+     UITextFieldが編集された直後に呼ばれる
+     */
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print("textFieldDidEndEditing: \(textField.text!)")
+    }
+    
+    /*
+     改行ボタンが押された際に呼ばれる
+     */
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("textFieldShouldReturn \(textField.text!)")
+        
+        // 改行ボタンが押されたらKeyboardを閉じる処理.
+        textField.resignFirstResponder()
+        
+        return true
+    }
     
 }
